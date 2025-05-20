@@ -14,7 +14,7 @@ We are yet far from this future, but please enjoy the beginnings of the app as-i
 ## Song libraries
 - ### [Sófár Daltár](https://sofarkotta.hu/)
 
-*Lyric is open source, you're welcome to launch it with your own name and logo. The process is not yet documented, so if you want to run a new instance or content bank? Get in touch!*
+*Lyric is open source, you're welcome to launch it with your own name and logo. The process is not yet documented, so if you want to run a new instance or content bank, get in touch!*
 
 ## Develop
 
