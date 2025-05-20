@@ -1,20 +1,22 @@
-# Sófár Lyric
-
-## [Download test version](https://github.com/reformatus/lyric/releases)
-
-You can now download a test version for Android here: [https://github.com/reformatus/lyric/releases](https://github.com/reformatus/lyric/releases) \
-Coming soon to beta programs on Play Store and App Store.
+# Lyric
 
 ## Your Open Worship Superapp
 
-[![On Commit or PR](https://github.com/reformatus/lyric/actions/workflows/on-commit.yml/badge.svg)](https://github.com/reformatus/lyric/actions/workflows/on-commit.yml)
-[![On Release](https://github.com/reformatus/lyric/actions/workflows/on-release.yml/badge.svg)](https://github.com/reformatus/lyric/actions/workflows/on-release.yml)
-
-**Sófár Lyric** will be your one-stop-shop for making the best setlists, performing from sheet music with your band, and projecting lyrics with sheet music.
-It will have an open and growing ecosystem of song libraries.
-
+**Lyric** will be your one-stop-shop for making setlists, performing from sheet music with your band, and projecting lyrics with sheet music.
+It will have an open and growing ecosystem of federated song libraries.\
 We are yet far from this future, but please enjoy the beginnings of the app as-is.
-Currently our only song library is the one of **Sófár**, which is an association aiding the reformed church of Hungary in all things worship.
+
+## Instances
+
+- ### [Sófár DalApp](https://app.sofarkotta.hu/)
+  [Source](https://github.com/reformatus/lyric/)
+
+## Song libraries
+- ### [Sófár Daltár](https://sofarkotta.hu/)
+
+*Lyric is open source, you're welcome to launch it with your own name and logo. The process is not yet documented, so if you want to run a new instance or content bank? Get in touch!*
+
+## Develop
 
 #### How to build
 
