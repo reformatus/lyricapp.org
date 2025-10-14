@@ -15,7 +15,7 @@ This documentation is automatically generated from our OpenAPI Specification (OA
         padding-top: 20px;
     }
     .swagger-ui .topbar {
-        /* Hide the default Swagger top bar if to have a cleaner look. */
+        /* Hide the default Swagger top bar to have a cleaner look. */
         display: none;
     }
 </style>
