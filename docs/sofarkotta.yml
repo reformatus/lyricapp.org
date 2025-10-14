@@ -1,9 +1,10 @@
 openapi: 3.0.4
 info:
   title: Sófárkotta API
-  version: 20250701.0.0
+  version: 20251014.0.0
 servers:
   - url: https://sofarkotta.hu/api/
+  - url: https://reflabs.hu/csillagpont-kottatar/api/
 paths:
   /songs:
     get:

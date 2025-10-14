@@ -18,6 +18,9 @@ This documentation is automatically generated from our OpenAPI Specification (OA
         /* Hide the default Swagger top bar to have a cleaner look. */
         display: none;
     }
+    .swagger-ui .info .title small pre.version {
+        color: #3b4151;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
