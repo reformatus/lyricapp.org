@@ -16,6 +16,10 @@ We are yet far from this future, but please enjoy the beginnings of the app as-i
 
 *Lyric is open source, you're welcome to launch it with your own name and logo. The process is not yet documented, so if you want to run a new instance or content bank, get in touch!*
 
+## Connect
+
+To have your own song library connected, prepare it according to the [API specification](api.md), then get in touch so we can add it to the app!
+
 ## Develop
 
 #### How to build

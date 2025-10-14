@@ -1,0 +1,371 @@
+openapi: 3.0.4
+info:
+  title: Sófárkotta API
+  version: 20250701.0.0
+servers:
+  - url: https://sofarkotta.hu/api/
+paths:
+  /songs:
+    get:
+      tags:
+        - Dalok
+      summary: Dallista
+      description: Összes kotta listája.
+      parameters:
+        - name: c
+          in: query
+          description: Csak az adott dátum után változott dalok listája.
+          required: false
+          schema:
+            type: string
+            format: date
+            example: 2025-05-01
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SongsItem'
+        default:
+          description: Váratlan hiba
+  /song/{song}:
+    get:
+      tags:
+        - Dalok
+      summary: Dal adatok
+      description: A megadott dal(ok) összes adata.
+      parameters:
+        - name: song
+          in: path
+          description: Dal UUID lista, vesszővel elválasztva.
+          required: true
+          schema:
+            type: string
+            example: "bbd91cdc-39af-4964-9738-a3b88a951b34,36516efb-7dbd-4b9c-b8bb-b9b03f5ce9be"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Song'
+        default:
+          description: Váratlan hiba
+  /about:
+    get:
+      tags:
+        - Bemutatkozás
+      summary: Bemutatkozás
+      description: A daltár bemutatkozása.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - uuid
+                  - logo
+                  - tinyLogo
+                  - name
+                  - description
+                  - legal
+                  - parallelUpdateJobs
+                  - amountOfSongsInRequest
+                  - aboutLink
+                  - contactEmail
+                  - noCms
+                  - songFields
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                    description: A daltár egyedi azonosítója.
+                    example: ac90ea8d-fe21-4be1-b24c-690b0365f370
+                  logo:
+                    type: string
+                    format: url
+                    description: A daltár normál méretű (192x192) logójának címe.
+                    example: "https://sofarhangolo.hu/wp-content/uploads/2024/10/cropped-logo_kor_szines@2x-192x192.png"
+                  tinyLogo:
+                    type: string
+                    format: url
+                    description: A daltár kisméretű (32x32) logójának címe.
+                    example: "https://sofarhangolo.hu/wp-content/uploads/2024/10/cropped-logo_kor_szines@2x-32x32.png"
+                  name:
+                    type: string
+                    description: A daltár neve.
+                    example: "Sófár Kottatár"
+                  description:
+                    type: string
+                    description: A daltár leírása.
+                    example: "A Sófár Dicsőítő Iskolákban használt kottafüzetek anyagai, sok évre visszamenően."
+                  legal:
+                    type: string
+                    description: A daltár jogi nyilatkozata.
+                    example: "Ezeket az énekeket egyedül Isten dicsőségére tesszük közzé azaz sem anyagi, sem egyéb hasznunk nem származik belőle. Ahol csak tudjuk, feltüntetjük az ének szerzőjét/szerzőit. Ha olyan éneket találsz itt, amelynek Te vagy a szerzője, azt kérjük, hogy jelezd nekünk emailben az info@sofarportal.hu címen, ui. szeretnénk hogy a szerző jóváhagyásával kerüljön fel minden ének. Ha pedig úgy látod szerzőként, hogy egy anyag a te szerzői jogaidat sérti, vagy nem szeretnéd, hogy éneked fent legyen honlapunkon, jelezd ugyanott, és levesszük. Célunk, hogy ezek az Istent dicsőítő énekek mindenki számára elérhetőek legyenek, és segítsék gyülekezeteink megújulását és épülését az Isten dicséretben."
+                  parallelUpdateJobs:
+                    type: integer
+                    minimum: 1
+                    description: Dalok letöltésekor párhuzamosan használható feladatok maximális száma.
+                    example: 2
+                  amountOfSongsInRequest:
+                    type: integer
+                    minimum: 1
+                    description: Dalok letöltésekor egy kérésben letölthető dalok maximális száma.
+                    example: 10
+                  aboutLink:
+                    type: string
+                    format: url
+                    description: A daltárat közzétevő szervezet webcíme.
+                    example: "https://sofarhangolo.hu"
+                  contactEmail:
+                    type: string
+                    format: email
+                    description: A daltár visszajelzéseket fogadó email-címe.
+                    example: "sofardaltar@gmail.com"
+                  noCms:
+                    type: boolean
+                    description: >-
+                      TRUE esetén statikus a daltár (azaz a `/songs?c` paraméter nem értelmezett, viszont az `/about` végpont `lastUpdated` mezője jelen van).
+                      FALSE esetén dinamikus a daltár (azaz a `/songs?c` paraméter használható, viszont az `/about` végponton nincs `lastUpdated` mező).
+                  lastUpdated:
+                    type: string
+                    format: date
+                    description: Statikus daltár esetén (amikor az `/about` végpont `noCms` mezője TRUE) a daltár utolsó frissítésének dátuma.
+                    example: 2025-07-01
+                  songFields:
+                    type: object
+                    description: Dalok tartalmazott mezői (jelenleg nem használt).
+        default:
+          description: Váratlan hiba
+components:
+  schemas:
+    SongsItem:
+      type: object
+      required:
+        - uuid
+        - title
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Dal UUID-ja
+          example: bbd91cdc-39af-4964-9738-a3b88a951b34
+        title:
+          type: string
+          description: Dal címe
+          example: "Áldd, lelkem, Istened"
+    Song:
+      type: object
+      required:
+        - uuid
+        - title
+        - language
+        - pdf
+        - content_tags
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Dal azonosítója
+          example: 36516efb-7dbd-4b9c-b8bb-b9b03f5ce9be
+        title:
+          type: string
+          description: Cím (magyar)
+          example: "Világítótornyom"
+        title_original:
+          type: string
+          description: Dal eredeti címe
+          example: "My Lighthouse"
+        year:
+          type: number
+          description: Dalszerzés éve
+          example: 2004
+        composer:
+          type: string
+          description: Dalszerző
+          example: "Rend Collective"
+        translator:
+          type: string
+          description: Fordította
+          example: "Szabó András, Kiss Sámson Endre"
+        key:
+          type: string
+          description: Hangnem(ek vesszővel elválasztott listája)
+          example: "A-dúr,Fis-moll"
+        ambitus:
+          type: string
+          enum:
+            - "egy oktáv"
+            - "másfél oktáv"
+            - "két oktáv"
+          description: Hangterjedelem
+          example: "másfél oktáv"
+        bible_ref:
+          type: string
+          description: Igeszakasz
+          example: "2Móz 20,2-17"
+        link:
+          type: string
+          format: url
+          description: Link
+          example: "https://www.youtube.com/watch?v=7Z3aua_iTGM"
+        liturgical_role:
+          type: string
+          enum:
+            - "kezdőének"
+            - "főének"
+            - "könyörgés"
+            - "invokáció"
+            - "keresztelő"
+            - "úrvacsora"
+            - "záróének"
+            - "asztali áldás"
+            - "reggel"
+            - "este"
+          description: Liturgiai szerep(ek vesszővel elválasztott listája)
+          example: "főének,úrvacsora"
+        language:
+          type: string
+          enum:
+            - "magyar"
+            - "angol"
+            - "német"
+            - "francia"
+            - "héber"
+            - "ír"
+            - "cigány"
+            - "egyéb"
+        opensong:
+          type: string
+          description: OpenSong szöveg
+        pdf:
+          type: string
+          description: PDF útvonal
+          example: "/system/files/2025-03/vilagitotornyom_jav_a.pdf"
+        ref_songbook:
+          type: string
+          description: Református énekeskönyv ének szám(ok)
+          example: "48/457, 21/722"
+        genre:
+          type: string
+          enum:
+            - "angolszász"
+            - "himnusz"
+            - "folk - magyar"
+            - "folk - ír"
+            - "folk - héber"
+            - "folk - cigány"
+            - "spirituálé/gospel"
+            - "meditatív"
+            - "gyerekdal"
+            - "egyéb"
+          description: Stílus(ok)/műfaj(ok vesszővel elválasztott listája)
+          example: "angolszász,gyerekdal"
+        svg:
+          type: string
+          description: SVG útvonal
+          example: "/system/files/2025-03/vilagitotornyom_jav_a.svg"
+        lyricist:
+          type: string
+          description: Szövegíró
+          example: "Dr. Pálhegyi Ferenc"
+        sofar:
+          type: string
+          enum:
+            - "2008 - Sárospatak"
+            - "2009 - Sárospatak"
+            - "2010 - Szentes"
+            - "2011 - Pápa"
+            - "2012 - Nagykőrös"
+            - "2013 - Győr"
+            - "2014 - Kiskunfélegyháza"
+            - "2015 - Tokaj"
+            - "2016 - Balatonfűzfő"
+            - "2017 - Kecskemét"
+            - "2018 - Szeged"
+            - "2019 - Pécs"
+            - "2020 - Ott ahol vagy"
+            - "2021 - Miskolc"
+            - "2022 - Kiskunfélegyháza"
+            - "2023 - Miskolc"
+            - "2024 - Bonyhád"
+            - "2025 - Bonyhád"
+          description: Sófár (táborok vesszővel elválasztott listája)
+          example: "2019 - Pécs,2022 - Kiskunfélegyháza"
+        content_tags:
+          type: string
+          enum:
+            - "Atya"
+            - "áldás"
+            - "bátorítás"
+            - "békesség"
+            - "bizalom Istenben"
+            - "bűnbánat"
+            - "elhívás-küldetés"
+            - "evangélium"
+            - "feltámadás"
+            - "gondviselés"
+            - "győzelem"
+            - "hálaadás"
+            - "hitvallás"
+            - "hívás"
+            - "imádat"
+            - "Isten tulajdonságai"
+            - "Jézus"
+            - "kegyelem"
+            - "közbenjárás"
+            - "megtérés"
+            - "mennyország"
+            - "Mindenható"
+            - "oltalom"
+            - "örvendezés"
+            - "passió"
+            - "reménység"
+            - "szabadítás"
+            - "Szentírás"
+            - "Szentlélek"
+            - "szentség"
+            - "szeretet"
+            - "Szentháromság"
+            - "teremtett világ"
+            - "várakozás Istenre"
+            - "vezetés"
+            - "visszajövetel"
+          description: Tartalomcímkék (vesszővel elválasztott listája)
+          example: "áldás,bátorítás,evangélium,gondviselés,kegyelem,örvendezés,teremtett világ"
+        tempo:
+          type: string
+          enum:
+            - "gyors"
+            - "közepes"
+            - "lassú"
+            - "változó"
+          description: Tempó
+          example: "közepes"
+        holiday:
+          type: string
+          enum:
+            - "Böjt"
+            - "Húsvét"
+            - "Pünkösd"
+            - "Reformáció"
+            - "Advent"
+            - "Karácsony"
+          description: Kapcsolódó ünnepkör(ök)/esemény(ek vesszővel elválasztott listája)
+          example: "Pünkösd,Advent"
+        variation_of:
+          type: string
+          format: uuid
+          description: Kapcsolódó dal azonosítója
+        presentation:
+          type: string
+          description: Versszaksorrend
+          example: "V1 C V2 C B C T"
