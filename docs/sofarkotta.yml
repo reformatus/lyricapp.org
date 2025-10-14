@@ -133,8 +133,8 @@ paths:
                   noCms:
                     type: boolean
                     description: >-
-                      FALSE esetén statikus a daltár (azaz a `/songs?c` paraméter nem értelmezett, viszont az `/about` végpont `lastUpdated` mezője jelen van).
-                      TRUE esetén dinamikus a daltár (azaz a `/songs?c` paraméter használható, viszont az `/about` végponton nincs `lastUpdated` mező).
+                      TRUE esetén statikus a daltár (azaz a `/songs?c` paraméter nem értelmezett, viszont az `/about` végpont `lastUpdated` mezője jelen van).
+                      FALSE esetén dinamikus a daltár (azaz a `/songs?c` paraméter használható, viszont az `/about` végponton nincs `lastUpdated` mező).
                   lastUpdated:
                     type: string
                     format: date
