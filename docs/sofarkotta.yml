@@ -1,7 +1,7 @@
 openapi: 3.0.4
 info:
   title: Sófárkotta API
-  version: 20251014.0.0
+  version: 20260304.0.0
 servers:
   - url: https://sofarkotta.hu/api/
   - url: https://reflabs.hu/csillagpont-kottatar/api/
@@ -177,6 +177,10 @@ components:
           format: uuid
           description: Dal azonosítója
           example: 36516efb-7dbd-4b9c-b8bb-b9b03f5ce9be
+        bpm:
+          type: number
+          description: BPM
+          example: 60
         title:
           type: string
           description: Cím (magyar)
@@ -189,10 +193,34 @@ components:
           type: number
           description: Dalszerzés éve
           example: 2004
+        time:
+          type: number
+          description: Dalszerzés ideje (Kr. e. évezredekben, Kr. u. évszázadokban)
+          example: kr_u_20
         composer:
           type: string
           description: Dalszerző
           example: "Rend Collective"
+        dynamics:
+          type: string
+          enum:
+            - "1 (nagyon nyugodt)"
+            - "2"
+            - "3"
+            - "4"
+            - "5 (nagyon dinamikus)"
+          description: Dinamika
+          example: "1 (nagyon nyugodt)"
+        other_features:
+          type: string
+          enum:
+            - "gyerekdal"
+            - "válaszolós"
+            - "többszólamú"
+            - "kánon"
+            - "instrumentális részt/szólót tartalmaz"
+          description: Egyéb zenei jellemzők
+          example: "válaszolós,többszólamú,kánon"
         translator:
           type: string
           description: Fordította
@@ -200,19 +228,30 @@ components:
         key:
           type: string
           description: Hangnem(ek vesszővel elválasztott listája)
-          example: "A-dúr,Fis-moll"
-        ambitus:
+          example: "A-dur,Fis-moll"
+        lowest_note:
           type: string
-          enum:
-            - "egy oktáv"
-            - "másfél oktáv"
-            - "két oktáv"
-          description: Hangterjedelem
-          example: "másfél oktáv"
+          description: "Legmélyebb hang a kottában"
+          example: "ais_b0"
+        highest_note:
+          type: string
+          description: "Legmagasabb hang a kottában"
+          example: "gis_as6"
         bible_ref:
           type: string
           description: Igeszakasz
           example: "2Móz 20,2-17"
+        instruments:
+          type: string
+          enum:
+            - "hegedű"
+            - "fuvola"
+            - "furulya"
+            - "elektromos gitár"
+            - "zongora"
+            - "szintetizátor"
+          description: Jellegzetes kísérő hangszerek
+          example: "hegedű,fuvola"
         link:
           type: string
           format: url
@@ -226,6 +265,7 @@ components:
             - "könyörgés"
             - "invokáció"
             - "keresztelő"
+            - "ráfelelő"
             - "úrvacsora"
             - "záróének"
             - "asztali áldás"
@@ -255,6 +295,10 @@ components:
           type: string
           description: Református énekeskönyv ének szám(ok)
           example: "48/457, 21/722"
+        time_signature:
+          type: string
+          description: Ütemmutató(k)/lüktetés(ek vesszővel elválasztott listája)
+          example: "3/4,7/8,Swing"
         genre:
           type: string
           enum:
@@ -267,7 +311,11 @@ components:
             - "spirituálé/gospel"
             - "meditatív"
             - "gyerekdal"
-            - "egyéb"
+            - "jazz"
+            - "rock"
+            - "kortárs keresztény (CCM)"
+            - "gregorián"
+            - "reneszánsz"
           description: Stílus(ok)/műfaj(ok vesszővel elválasztott listája)
           example: "angolszász,gyerekdal"
         svg:
@@ -278,7 +326,7 @@ components:
           type: string
           description: Szövegíró
           example: "Dr. Pálhegyi Ferenc"
-        sofar:
+        book:
           type: string
           enum:
             - "2008 - Sárospatak"
@@ -299,6 +347,7 @@ components:
             - "2023 - Miskolc"
             - "2024 - Bonyhád"
             - "2025 - Bonyhád"
+            - "2026 - Bonyhád"
           description: Sófár (táborok vesszővel elválasztott listája)
           example: "2019 - Pécs,2022 - Kiskunfélegyháza"
         content_tags:
@@ -342,30 +391,34 @@ components:
             - "visszajövetel"
           description: Tartalomcímkék (vesszővel elválasztott listája)
           example: "áldás,bátorítás,evangélium,gondviselés,kegyelem,örvendezés,teremtett világ"
-        tempo:
-          type: string
-          enum:
-            - "gyors"
-            - "közepes"
-            - "lassú"
-            - "változó"
-          description: Tempó
-          example: "közepes"
         holiday:
           type: string
           enum:
-            - "Böjt"
+            - "Újév"
+            - "Nagyböjt"
+            - "Virágvasárnap"
+            - "Nagypéntek"
             - "Húsvét"
             - "Pünkösd"
             - "Reformáció"
             - "Advent"
             - "Karácsony"
+            - "Keresztelés/bemerítés"
+            - "Esküvő"
+            - "Temetés"
           description: Kapcsolódó ünnepkör(ök)/esemény(ek vesszővel elválasztott listája)
           example: "Pünkösd,Advent"
         variation_of:
           type: string
           format: uuid
           description: Kapcsolódó dal azonosítója
+        changing_bpm:
+          type: string
+          enum:
+            - "Igen"
+            - "Nem"
+          description: Változó tempó
+          example: "Nem"
         presentation:
           type: string
           description: Versszaksorrend
