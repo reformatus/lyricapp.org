@@ -1,7 +1,7 @@
 openapi: 3.0.4
 info:
   title: Sófárkotta API
-  version: 20260304.0.0
+  version: 20260418.0.0
 servers:
   - url: https://sofarkotta.hu/api/
   - url: https://reflabs.hu/csillagpont-kottatar/api/
@@ -228,15 +228,15 @@ components:
         key:
           type: string
           description: Hangnem(ek vesszővel elválasztott listája)
-          example: "A-dur,Fis-moll"
+          example: "D#/Eb-dúr,F#/Gb-moll"
         lowest_note:
           type: string
           description: "Legmélyebb hang a kottában"
-          example: "ais_b0"
+          example: "A#/B0"
         highest_note:
           type: string
           description: "Legmagasabb hang a kottában"
-          example: "gis_as6"
+          example: "G#/Ab6"
         bible_ref:
           type: string
           description: Igeszakasz
