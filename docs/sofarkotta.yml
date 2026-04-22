@@ -1,10 +1,11 @@
 openapi: 3.0.4
 info:
   title: Sófárkotta API
-  version: 20260418.0.0
+  version: 20260422.0.0
 servers:
-  - url: https://sofarkotta.hu/api/
+  - url: https://sofarkotta.hu/api/v2/
   - url: https://reflabs.hu/csillagpont-kottatar/api/
+    description: Uses the old API.
 paths:
   /songs:
     get:
@@ -212,23 +213,32 @@ components:
           description: Dinamika
           example: "1 (nagyon nyugodt)"
         other_features:
-          type: string
-          enum:
-            - "gyerekdal"
+          type: array
+          description: Egyéb zenei jellemzők
+          items:
+            type: string
+            enum:
+              - "gyerekdal"
+              - "válaszolós"
+              - "többszólamú"
+              - "kánon"
+              - "instrumentális részt/szólót tartalmaz"
+          example:
             - "válaszolós"
             - "többszólamú"
             - "kánon"
-            - "instrumentális részt/szólót tartalmaz"
-          description: Egyéb zenei jellemzők
-          example: "válaszolós,többszólamú,kánon"
         translator:
           type: string
           description: Fordította
           example: "Szabó András, Kiss Sámson Endre"
         key:
-          type: string
-          description: Hangnem(ek vesszővel elválasztott listája)
-          example: "D#/Eb-dúr,F#/Gb-moll"
+          type: array
+          description: Hangnemek
+          items:
+            type: string
+          example:
+            - "D#/Eb-dúr"
+            - "F#/Gb-moll"
         lowest_note:
           type: string
           description: "Legmélyebb hang a kottában"
@@ -242,37 +252,48 @@ components:
           description: Igeszakasz
           example: "2Móz 20,2-17"
         instruments:
-          type: string
-          enum:
+          type: array
+          description: Jellegzetes kísérő hangszerek
+          items:
+            type: string
+            enum:
+              - "hegedű"
+              - "fuvola"
+              - "furulya"
+              - "elektromos gitár"
+              - "zongora"
+              - "szintetizátor"
+          example:
             - "hegedű"
             - "fuvola"
-            - "furulya"
-            - "elektromos gitár"
-            - "zongora"
-            - "szintetizátor"
-          description: Jellegzetes kísérő hangszerek
-          example: "hegedű,fuvola"
         link:
-          type: string
-          format: url
+          type: array
           description: Link
-          example: "https://www.youtube.com/watch?v=7Z3aua_iTGM"
+          items:
+            type: string
+            format: url
+          example:
+            - "https://www.youtube.com/watch?v=7Z3aua_iTGM"
         liturgical_role:
-          type: string
-          enum:
-            - "kezdőének"
+          type: array
+          description: Liturgiai szerepek
+          items:
+            type: string
+            enum:
+              - "kezdőének"
+              - "főének"
+              - "könyörgés"
+              - "invokáció"
+              - "keresztelő"
+              - "ráfelelő"
+              - "úrvacsora"
+              - "záróének"
+              - "asztali áldás"
+              - "reggel"
+              - "este"
+          example:
             - "főének"
-            - "könyörgés"
-            - "invokáció"
-            - "keresztelő"
-            - "ráfelelő"
             - "úrvacsora"
-            - "záróének"
-            - "asztali áldás"
-            - "reggel"
-            - "este"
-          description: Liturgiai szerep(ek vesszővel elválasztott listája)
-          example: "főének,úrvacsora"
         language:
           type: string
           enum:
@@ -291,33 +312,42 @@ components:
           type: string
           description: PDF útvonal
           example: "/system/files/2025-03/vilagitotornyom_jav_a.pdf"
-        ref_songbook:
+        songbook:
           type: string
-          description: Református énekeskönyv ének szám(ok)
+          description: Énekeskönyvi számozás(ok)
           example: "48/457, 21/722"
         time_signature:
-          type: string
-          description: Ütemmutató(k)/lüktetés(ek vesszővel elválasztott listája)
-          example: "3/4,7/8,Swing"
+          type: array
+          description: Ütemmutatók/lüktetések
+          items:
+            type: string
+          example:
+            - "3/4"
+            - "7/8"
+            - "Swing"
         genre:
-          type: string
-          enum:
+          type: array
+          description: Stílusok/műfajok
+          items:
+            type: string
+            enum:
+              - "angolszász"
+              - "himnusz"
+              - "folk - magyar"
+              - "folk - ír"
+              - "folk - héber"
+              - "folk - cigány"
+              - "spirituálé/gospel"
+              - "meditatív"
+              - "gyerekdal"
+              - "jazz"
+              - "rock"
+              - "kortárs keresztény (CCM)"
+              - "gregorián"
+              - "reneszánsz"
+          example:
             - "angolszász"
-            - "himnusz"
-            - "folk - magyar"
-            - "folk - ír"
-            - "folk - héber"
-            - "folk - cigány"
-            - "spirituálé/gospel"
-            - "meditatív"
             - "gyerekdal"
-            - "jazz"
-            - "rock"
-            - "kortárs keresztény (CCM)"
-            - "gregorián"
-            - "reneszánsz"
-          description: Stílus(ok)/műfaj(ok vesszővel elválasztott listája)
-          example: "angolszász,gyerekdal"
         svg:
           type: string
           description: SVG útvonal
@@ -327,87 +357,104 @@ components:
           description: Szövegíró
           example: "Dr. Pálhegyi Ferenc"
         book:
-          type: string
-          enum:
-            - "2008 - Sárospatak"
-            - "2009 - Sárospatak"
-            - "2010 - Szentes"
-            - "2011 - Pápa"
-            - "2012 - Nagykőrös"
-            - "2013 - Győr"
-            - "2014 - Kiskunfélegyháza"
-            - "2015 - Tokaj"
-            - "2016 - Balatonfűzfő"
-            - "2017 - Kecskemét"
-            - "2018 - Szeged"
+          type: array
+          description: Sófár kottafüzetek
+          items:
+            type: string
+            enum:
+              - "2008 - Sárospatak"
+              - "2009 - Sárospatak"
+              - "2010 - Szentes"
+              - "2011 - Pápa"
+              - "2012 - Nagykőrös"
+              - "2013 - Győr"
+              - "2014 - Kiskunfélegyháza"
+              - "2015 - Tokaj"
+              - "2016 - Balatonfűzfő"
+              - "2017 - Kecskemét"
+              - "2018 - Szeged"
+              - "2019 - Pécs"
+              - "2020 - Ott ahol vagy"
+              - "2021 - Miskolc"
+              - "2022 - Kiskunfélegyháza"
+              - "2023 - Miskolc"
+              - "2024 - Bonyhád"
+              - "2025 - Bonyhád"
+              - "2026 - Bonyhád"
+          example:
             - "2019 - Pécs"
-            - "2020 - Ott ahol vagy"
-            - "2021 - Miskolc"
             - "2022 - Kiskunfélegyháza"
-            - "2023 - Miskolc"
-            - "2024 - Bonyhád"
-            - "2025 - Bonyhád"
-            - "2026 - Bonyhád"
-          description: Sófár (táborok vesszővel elválasztott listája)
-          example: "2019 - Pécs,2022 - Kiskunfélegyháza"
         content_tags:
-          type: string
-          enum:
-            - "Atya"
+          type: array
+          description: Tartalomcímkék
+          items:
+            type: string
+            enum:
+              - "Atya"
+              - "áldás"
+              - "bátorítás"
+              - "békesség"
+              - "bizalom Istenben"
+              - "bűnbánat"
+              - "elhívás-küldetés"
+              - "evangélium"
+              - "feltámadás"
+              - "gondviselés"
+              - "győzelem"
+              - "hálaadás"
+              - "hitvallás"
+              - "hívás"
+              - "imádat"
+              - "Isten tulajdonságai"
+              - "Jézus"
+              - "kegyelem"
+              - "közbenjárás"
+              - "megtérés"
+              - "mennyország"
+              - "Mindenható"
+              - "oltalom"
+              - "örvendezés"
+              - "passió"
+              - "reménység"
+              - "szabadítás"
+              - "Szentírás"
+              - "Szentlélek"
+              - "szentség"
+              - "szeretet"
+              - "Szentháromság"
+              - "teremtett világ"
+              - "várakozás Istenre"
+              - "vezetés"
+              - "visszajövetel"
+          example:
             - "áldás"
             - "bátorítás"
-            - "békesség"
-            - "bizalom Istenben"
-            - "bűnbánat"
-            - "elhívás-küldetés"
             - "evangélium"
-            - "feltámadás"
             - "gondviselés"
-            - "győzelem"
-            - "hálaadás"
-            - "hitvallás"
-            - "hívás"
-            - "imádat"
-            - "Isten tulajdonságai"
-            - "Jézus"
             - "kegyelem"
-            - "közbenjárás"
-            - "megtérés"
-            - "mennyország"
-            - "Mindenható"
-            - "oltalom"
             - "örvendezés"
-            - "passió"
-            - "reménység"
-            - "szabadítás"
-            - "Szentírás"
-            - "Szentlélek"
-            - "szentség"
-            - "szeretet"
-            - "Szentháromság"
             - "teremtett világ"
-            - "várakozás Istenre"
-            - "vezetés"
-            - "visszajövetel"
-          description: Tartalomcímkék (vesszővel elválasztott listája)
-          example: "áldás,bátorítás,evangélium,gondviselés,kegyelem,örvendezés,teremtett világ"
         holiday:
-          type: string
-          enum:
-            - "Újév"
-            - "Nagyböjt"
-            - "Virágvasárnap"
-            - "Nagypéntek"
-            - "Húsvét"
+          type: array
+          description: Kapcsolódó ünnepkörök/események
+          items:
+            type: string
+            enum:
+              - "Újév"
+              - "Nagyböjt"
+              - "Virágvasárnap"
+              - "Nagypéntek"
+              - "Húsvét"
+              - "Pünkösd"
+              - "Reformáció"
+              - "Advent"
+              - "Karácsony"
+              - "Keresztelés/bemerítés"
+              - "Esküvő"
+              - "Temetés"
+          example:
             - "Pünkösd"
-            - "Reformáció"
             - "Advent"
-            - "Karácsony"
-            - "Keresztelés/bemerítés"
-            - "Esküvő"
-            - "Temetés"
-          description: Kapcsolódó ünnepkör(ök)/esemény(ek vesszővel elválasztott listája)
-          example: "Pünkösd,Advent"
         variation_of:
           type: string
           format: uuid
